@@ -7,8 +7,14 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var graphqlHTTP = require('express-graphql');
+
 var app = express();
 
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  graphiql: true
+}));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
