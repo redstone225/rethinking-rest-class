@@ -1,0 +1,3 @@
+env = {
+  GITHUB_PERSONAL_ACCESS_TOKEN: 'h6b6c175dfd96df0020af33749deafc623d223a5d'
+}
