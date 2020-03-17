@@ -1,7 +1,21 @@
 const fullStar = "★";
 const emptyStar = "☆";
 
-onst queryRepoList = `
+const commitFragment = `
+fragment commitFragment on Repository {
+  ref(qualifiedName: "master") {
+    target {
+      ... on Commit {
+        history {
+          totalCount
+        }
+      }
+    }
+  }
+}
+`;
+
+const queryRepoList = `
 {
   viewer {
     name
@@ -23,22 +37,6 @@ onst queryRepoList = `
   }
 }` + commitFragment;
 
-<<<<<<< Updated upstream
-const queryRepoList = `
-query {
-  viewer {
-    name
-    repositories(first: 9, orderBy: {field: CREATED_AT, direction: DESC}) {
-      totalCount
-      nodes {
-        name
-      }
-    }
-  }
-}
-`;
-=======
->>>>>>> Stashed changes
 
 let mutationAddStar;
 
@@ -48,27 +46,15 @@ function gqlRequest(query, variables, onSuccess) {
   // MAKE GRAPHQL REQUEST
   $.post({
     url: "https://api.github.com/graphql",
-<<<<<<< Updated upstream
-    contentType: "application/json",
-    headers: {
-      Authorization: `bearer ${env.GITHUB_PERSONAL_ACCESS_TOKEN}`
-    },
-=======
     headers: {
       Authorization: `bearer ${env.GITHUB_PERSONAL_ACCESS_TOKEN}`
     },
     contentType: "application/json",
->>>>>>> Stashed changes
     data: JSON.stringify({
       query: query,
       variables: variables
     }),
     success: (response) => {
-<<<<<<< Updated upstream
-      console.log(response);
-      onSuccess(response);
-    }
-=======
       if (response.errors) {
         console.log(response.errors);
       } else {
@@ -76,7 +62,6 @@ function gqlRequest(query, variables, onSuccess) {
       }
     },
     error: (error) => console.log(error)
->>>>>>> Stashed changes
   });
 }
 
@@ -87,19 +72,6 @@ function starHandler(element) {
 
 $(window).ready(function() {
   // GET NAME AND REPOSITORIES FOR VIEWER
-<<<<<<< Updated upstream
-  gqlRequest(queryRepoList, null, (response) => {
-    $('header h2').text(`Hello ${response.data.viewer.name}`);
-    const repos = response.data.viewer.repositories;
-    if (repos.totalCount > 0) {
-      $('ul.repos').empty();
-      repos.nodes.forEach((repo) => {
-        const card = `<h3>${repo.name}</h3>`;
-        $('ul.repos').append(`<li><div>${card}</div></li>`);
-      });
-    }
-  });
-=======
   gqlRequest(queryRepoList, {},
     (response) => {
       $('header h2').text(`Hello ${response.data.viewer.name}`);
@@ -121,5 +93,4 @@ $(window).ready(function() {
         $("ul.repos").append(`<li><div>${card}</div></li>`)
       });
     });
->>>>>>> Stashed changes
 });
